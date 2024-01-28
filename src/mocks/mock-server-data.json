@@ -1,0 +1,137 @@
+{
+  "titles": [
+    "Cozy Apartment in the Heart of the City",
+    "Modern Studio with Stunning Views",
+    "Charming Cottage Near the Beach",
+    "Spacious Townhouse for Family Getaways",
+    "Luxurious Penthouse with Panoramic Skyline",
+    "Quaint Cabin Retreat in the Woods",
+    "Beachfront Paradise with Private Pool",
+    "Downtown Loft with Urban Elegance",
+    "Rustic Villa Surrounded by Nature",
+    "Elegant Mansion for Special Events",
+    "Scenic Lakefront Getaway with Boat Access",
+    "Ski-In/Ski-Out Chalet for Winter Retreats",
+    "Historic Colonial Home with Vintage Charm",
+    "Contemporary Beach House with Outdoor Lounge",
+    "Mountain View Hideaway for Nature Lovers",
+    "Pet-Friendly Cottage with Fenced Yard",
+    "Sunny Condo with Balcony Overlooking Park",
+    "Secluded Farmhouse for a Tranquil Escape",
+    "Cityscape Penthouse with Rooftop Jacuzzi",
+    "Coastal Retreat with Private Beach Access"
+  ],
+  "descriptions": [
+    "Experience the charm of city living in this cozy apartment located in the heart of downtown. Close to shops, restaurants, and cultural attractions.",
+    "Enjoy breathtaking views from this modern studio, featuring sleek design and all the amenities you need for a comfortable stay.",
+    "Escape to a charming cottage near the beach, where you can relax and unwind in a peaceful and serene environment.",
+    "Perfect for family getaways, this spacious townhouse offers ample room and modern conveniences for a memorable vacation.",
+    "Indulge in luxury with this penthouse boasting panoramic skyline views. Immerse yourself in elegance and sophistication.",
+    "Find peace in nature with a stay at this quaint cabin retreat in the woods. A perfect getaway for those seeking tranquility.",
+    "Step into paradise with a beachfront rental featuring a private pool. Enjoy the sun, sea, and sand right at your doorstep.",
+    "Experience urban elegance in this downtown loft, offering stylish decor and proximity to the city's vibrant nightlife.",
+    "Surround yourself with nature in this rustic villa, providing a charming and secluded retreat away from the hustle and bustle.",
+    "Host special events and gatherings in this elegant mansion, where historic charm meets modern luxury.",
+    "Enjoy a scenic lakefront getaway with boat access, perfect for water enthusiasts and those seeking a peaceful retreat.",
+    "Hit the slopes with a ski-in/ski-out chalet, providing comfort and convenience for a memorable winter escape.",
+    "Step back in time with a stay at this historic colonial home, featuring vintage charm and modern amenities.",
+    "Relax in a contemporary beach house with an outdoor lounge, offering the perfect setting for seaside enjoyment.",
+    "Embrace the beauty of the mountains in this hideaway, where stunning views and tranquility await nature lovers.",
+    "Travel with your furry friends to a pet-friendly cottage with a fenced yard, providing a comfortable space for both you and your pets.",
+    "Bask in sunlight on the balcony of this sunny condo overlooking a park. A peaceful retreat within the city.",
+    "Escape to a secluded farmhouse for a tranquil and rejuvenating experience surrounded by nature's beauty.",
+    "Indulge in city living with a penthouse featuring a rooftop jacuzzi and stunning cityscape views.",
+    "Unwind in a coastal retreat with private beach access, offering a perfect blend of relaxation and seaside adventures."
+  ],
+  "cities": [{
+      "name": "Paris",
+      "location": {
+        "latitude": 48.85661,
+        "longitude": 2.351499
+      }
+    },
+    {
+      "name": "Cologne",
+      "location": {
+        "latitude": 50.938361,
+        "longitude": 6.959974
+      }
+    },
+    {
+      "name": "Brussels",
+      "location": {
+        "latitude": 50.846557,
+        "longitude": 4.351697
+      }
+    },
+    {
+      "name": "Amsterdam",
+      "location": {
+        "latitude": 52.370216,
+        "longitude": 4.895168
+      }
+    },
+    {
+      "name": "Hamburg",
+      "location": {
+        "latitude": 53.550341,
+        "longitude": 10.000654
+      }
+    },
+    {
+      "name": "Dusseldorf",
+      "location": {
+        "latitude": 51.225402,
+        "longitude": 6.776314
+      }
+    }
+  ],
+  "previewImages": [
+    "https://picsum.photos/200/200?random=1",
+    "https://picsum.photos/200/200?random=2",
+    "https://picsum.photos/200/200?random=3",
+    "https://picsum.photos/200/200?random=4",
+    "https://picsum.photos/200/200?random=5",
+    "https://picsum.photos/200/200?random=6",
+    "https://picsum.photos/200/200?random=7",
+    "https://picsum.photos/200/200?random=8",
+    "https://picsum.photos/200/200?random=9"
+  ],
+  "images": [
+    "https://picsum.photos/400/400?random=1",
+    "https://picsum.photos/400/400?random=2",
+    "https://picsum.photos/400/400?random=3",
+    "https://picsum.photos/400/400?random=4",
+    "https://picsum.photos/400/400?random=5",
+    "https://picsum.photos/400/400?random=6",
+    "https://picsum.photos/400/400?random=7",
+    "https://picsum.photos/400/400?random=8",
+    "https://picsum.photos/400/400?random=9",
+    "https://picsum.photos/400/400?random=10",
+    "https://picsum.photos/400/400?random=11",
+    "https://picsum.photos/400/400?random=12",
+    "https://picsum.photos/400/400?random=13",
+    "https://picsum.photos/400/400?random=14",
+    "https://picsum.photos/400/400?random=15",
+    "https://picsum.photos/400/400?random=16",
+    "https://picsum.photos/400/400?random=17",
+    "https://picsum.photos/400/400?random=18",
+    "https://picsum.photos/400/400?random=19",
+    "https://picsum.photos/400/400?random=20"
+  ],
+  "types": [
+    "apartment",
+    "house",
+    "room",
+    "hotel"
+  ],
+  "goods": [
+    "Breakfast",
+    "Air conditioning",
+    "Laptop friendly workspace",
+    "Baby seat",
+    "Washer",
+    "Towels",
+    "Fridge"
+  ]
+}
