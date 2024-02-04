@@ -1,5 +1,7 @@
 node_modules
-.idea
-src/mocks/*.tsv
 .DS_Store
+.idea
 dist
+src/mocks/*.tsv
+.env
+logs/*.log
