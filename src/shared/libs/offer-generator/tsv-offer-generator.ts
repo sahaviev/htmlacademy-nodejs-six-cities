@@ -19,14 +19,14 @@ export class TSVOfferGenerator implements OfferGenerator {
   constructor(private readonly mockData: MockServerData) {}
 
   public generate(): string {
-    const title = getRandomItem<string>(this.mockData.titles);
-    const description = getRandomItem<string>(this.mockData.descriptions);
+    const title = getRandomItem(this.mockData.titles);
+    const description = getRandomItem(this.mockData.descriptions);
     const publishDate = dayjs()
       .subtract(generateRandomValue(1, 240), 'hours')
       .toISOString();
     const city = getRandomItem(this.mockData.cities);
     const previewImage = getRandomItem(this.mockData.previewImages);
-    const images = getRandomItems(this.mockData.images).slice(0, 6);
+    const images = getRandomItems(this.mockData.images).slice(0, 6).join(';');
     const isPremium = Boolean(generateRandomValue(0, 1));
     const isFavorite = Boolean(generateRandomValue(0, 1));
     const rating = generateRandomValue(MIN_RATING, MAX_RATING, 1);
@@ -34,10 +34,12 @@ export class TSVOfferGenerator implements OfferGenerator {
     const maxAdults = generateRandomValue(MIN_ADULTS, MAX_ADULTS);
     const bedrooms = generateRandomValue(MIN_BEDROOMS, MAX_BEDROOMS);
     const price = generateRandomValue(MIN_PRICE / 10, MAX_PRICE / 10) * 10;
-    const goods = getRandomItems(this.mockData.goods);
+    const features = getRandomItems(this.mockData.features).join(';');
 
     const latitude = generateRandomValue(city.location.latitude - 0.1, city.location.latitude + 0.1, 6);
     const longitude = generateRandomValue(city.location.longitude - 0.1, city.location.longitude + 0.1, 6);
+
+    const user = getRandomItem(this.mockData.users);
 
     return [
       title,
@@ -55,9 +57,13 @@ export class TSVOfferGenerator implements OfferGenerator {
       bedrooms,
       maxAdults,
       price,
-      goods,
+      features,
       latitude,
       longitude,
+      user.name,
+      user.email,
+      user.avatarUrl,
+      user.type,
     ].join('\t');
   }
 }

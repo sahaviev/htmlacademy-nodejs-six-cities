@@ -1,4 +1,4 @@
-import { Offer, OfferType } from '../types/index.js';
+import { Offer, OfferType, UserType } from '../types/index.js';
 
 export function createOffer(offerData: string): Offer {
   const [
@@ -17,10 +17,14 @@ export function createOffer(offerData: string): Offer {
     bedrooms,
     maxAdults,
     price,
-    goods,
+    features,
     latitude,
     longitude,
-  ] = offerData.split('\t');
+    userName,
+    userEmail,
+    userAvatarUrl,
+    userType,
+  ] = offerData.replace('\n', '').split('\t');
 
   return {
     title,
@@ -42,10 +46,16 @@ export function createOffer(offerData: string): Offer {
     bedrooms: Number(bedrooms),
     maxAdults: Number(maxAdults),
     price: Number(price),
-    goods: goods.split(';'),
+    features: features.split(';'),
     location: {
       latitude: Number(latitude),
       longitude: Number(longitude),
     },
+    user: {
+      name: userName,
+      email: userEmail,
+      avatarUrl: userAvatarUrl,
+      type: userType as UserType,
+    }
   };
 }
