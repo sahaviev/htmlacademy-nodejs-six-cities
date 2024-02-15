@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: feature resources
+  version: '1.0'
+paths: {}
+components:
+  schemas:
+    Feature:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 65bff9b8012a887b2096463b
+        name:
+          type: string
+          example: Air conditioning
+          required: true

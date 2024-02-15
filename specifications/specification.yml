@@ -1,0 +1,430 @@
+openapi: 3.0.3
+info:
+  title: API сервер для демо-проекта «Шесть Городов».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть Городов».
+  contact:
+    email: sahaviev@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+
+servers:
+  - url: https://localhost:4000
+
+tags:
+  - name: offers
+    description: Действия с предложениями по аренде.
+  - name: comments
+    description: Действия с комментариями.
+  - name: users
+    description: Действия с пользователями.
+  - name: auth
+    description: Действия с сессией.
+  - name: cities
+    description: Действия с городами.
+  - name: features
+    description: Действия с удобствами.
+
+paths:
+  /offers:
+    get:
+      tags:
+        - offers
+      summary: Список предложенией по аренде
+      description: |-
+        Ресурс для получения списка предложенией по аренде.
+
+        По умолчанию сервис возвращает не больше 60 предложений по аренде
+
+        Клиент может запросить больше предложений, указав нужное количество в параметре запроса.
+
+        Сервис всегда возвращает отсортированный список предложений по дате публикации (по убыванию).
+
+        Список предложений по аренде могут запрашивать анонимные и авторизованные клиенты.
+
+      responses:
+        '200':
+          description: Массив объектов предложения по аренде.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'offer.resources.yml#/components/schemas/Offer'
+    post:
+      tags:
+        - offers
+      summary: Создание предложения по аренде
+      description: Ресурс для создания нового предложения по аренде.
+      requestBody:
+        description: Информация для создание нового предложения по аренде.
+        content:
+          application/json:
+            schema:
+              $ref: 'offer.resources.yml#/components/schemas/CreateOfferRequest'
+        required: true
+      responses:
+        '201':
+          description: Предложение по аренде создано. Объект предложения по аренде.
+          content:
+            application/json:
+              schema:
+                $ref: 'offer.resources.yml#/components/schemas/OfferDetails'
+        '400':
+          description: Ошибка валидации данных.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+        '401':
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/UnauthorizedError'
+
+  /offers/${offerId}:
+    get:
+      summary: Получение определенного предложения по аренде
+      description: Ресурс для получение определенного предложения по аренде.
+      tags:
+        - offers
+      parameters:
+        - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
+      responses:
+        '200':
+          description: Объект предложения по аренде.
+          content:
+            application/json:
+              schema:
+                $ref: 'offer.resources.yml#/components/schemas/OfferDetails'
+        '404':
+          description: Ошибка объект предложения по аренде не найден.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+
+    patch:
+      tags:
+        - offers
+      summary: Редактирование предложения по аренде
+      description: Ресурс для редактирование предложения по аренде.
+      parameters:
+        - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
+      requestBody:
+        description: Информация для редактирования предложения об аренде.
+        content:
+          application/json:
+            schema:
+              $ref: 'offer.resources.yml#/components/schemas/CreateOfferRequest'
+        required: true
+      responses:
+        '200':
+          description: Предложение по аренде обновлено. Объект предложения по аренде.
+          content:
+            application/json:
+              schema:
+                $ref: 'offer.resources.yml#/components/schemas/OfferDetails'
+        '400':
+          description: Ошибка валидации данных.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+        '401':
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/UnauthorizedError'
+        '403':
+          description: Доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/ForbiddenError'
+
+    delete:
+      tags:
+        - offers
+      summary: Удаление предложения по аренде
+      description: Ресурс для удаления предложения по аренде.
+      parameters:
+        - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
+      responses:
+        '204':
+          description: Предложение по аренде успешно удалено.
+        '404':
+          description: Ошибка объект предложения по аренде не найден.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+
+  /offers/${offerId}/favorite:
+      patch:
+        tags:
+          - offers
+        summary: Добавление и удаление предложения по аренде в избранное
+        description: Ресурс для добавления и удаления предложения по аренде в избранное.
+        parameters:
+          - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
+        requestBody:
+          description: Информация для добавления предложения об аренде в избранное.
+          content:
+            application/json:
+              schema:
+                $ref: 'offer.resources.yml#/components/schemas/SetFavoriteRequest'
+          required: true
+        responses:
+          '200':
+            description: Предложение по аренде обновлено. Объект предложения по аренде.
+            content:
+              application/json:
+                schema:
+                  $ref: 'offer.resources.yml#/components/schemas/OfferDetails'
+          '400':
+            description: Ошибка валидации данных.
+            content:
+              application/json:
+                schema:
+                  $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+          '401':
+            description: Пользователь не авторизован.
+            content:
+              application/json:
+                schema:
+                  $ref: 'error.resources.yml#/components/schemas/UnauthorizedError'
+          '404':
+            description: Ошибка объект предложения по аренде не найден.
+            content:
+              application/json:
+                schema:
+                  $ref: 'error.resources.yml#/components/schemas/NotFoundError'
+
+  /offers/premium-offers:
+    get:
+      tags:
+        - offers
+      summary: Список премиальных предложенией по аренде для города
+      description: Ресурс для получения списка премиальных предложенией по аренде для города.
+      parameters:
+        - $ref: 'offer.resources.yml#/components/parameters/CityIdQuery'
+      responses:
+        '200':
+          description: Массив объектов предложения по аренде.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'offer.resources.yml#/components/schemas/Offer'
+
+  /offers/favorite-offers:
+    get:
+      tags:
+        - offers
+      summary: Список предложенией по аренде добавленных в избранное
+      description: Ресурс для получения списка предложенией по аренде добавленных в избранное.
+      responses:
+        '200':
+          description: Массив объектов предложения по аренде.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'offer.resources.yml#/components/schemas/Offer'
+
+  /offers/${offerId}/comments:
+    get:
+      tags:
+        - comments
+      summary: Список комментариев для предложения по аренде
+      description: Ресурс для получения списка комментариев для предложения по аренде.
+      parameters:
+        - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
+      responses:
+        '200':
+          description: Массив объектов комментария.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'comment.resources.yml#/components/schemas/Comment'
+        '404':
+          description: Ошибка объект предложения по аренде не найден.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+    post:
+      tags:
+        - comments
+      summary: Добавление комментария к определённому предложению по аренде
+      description: Ресурс для добавления комментариев к определённому предложению по аренде.
+      parameters:
+        - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
+      requestBody:
+        description: Информация для создание нового комментария.
+        content:
+          application/json:
+            schema:
+              $ref: 'comment.resources.yml#/components/schemas/CreateCommentRequest'
+        required: true
+      responses:
+        '201':
+          description: Комментарий создан. Объект комментария.
+          content:
+            application/json:
+              schema:
+                $ref: 'comment.resources.yml#/components/schemas/Comment'
+        '400':
+          description: Ошибка валидации данных.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+        '401':
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/UnauthorizedError'
+        '404':
+          description: Ошибка объект предложения по аренде не найден.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+
+  /users:
+    post:
+      tags:
+        - users
+      summary: Создание нового пользователя
+      description: Ресурс для создания нового пользователя.
+      requestBody:
+        description: Информация для создание нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: 'user.resources.yml#/components/schemas/CreateUserRequest'
+        required: true
+      responses:
+        '201':
+          description: Пользователь создан. Объект пользователя.
+          content:
+            application/json:
+              schema:
+               $ref: 'user.resources.yml#/components/schemas/User'
+        '400':
+          description: Ошибка валидации данных.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+        '403':
+          description: Доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/ForbiddenError'
+
+  /auth/session:
+    get:
+      tags:
+        - auth
+      summary: Проверка состояния сессии
+      description: Ресурс для проверки состояния сессии — авторизован или нет.
+      responses:
+        '200':
+          description: Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: 'user.resources.yml#/components/schemas/User'
+        '401':
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/UnauthorizedError'
+
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Вход в закрытую часть приложения
+      description: Ресурс для входа в закрытую часть приложения.
+      requestBody:
+        description: Информация для аутентификации и авторизации пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: 'auth.resources.yml#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Сессия успешно создана. Объект с токеном.
+          content:
+            application/json:
+              schema:
+                $ref: 'auth.resources.yml#/components/schemas/Token'
+        '400':
+          description: Ошибка валидации данных.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: Выход из закрытой части приложения
+      description: Ресурс для выхода из закрытой части приложения.
+      responses:
+        '204':
+          description: Сессия успешно завершена.
+        '401':
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/UnauthorizedError'
+
+  /cities:
+    get:
+      tags:
+        - cities
+      summary: Список городов
+      description: Ресурс для получения списка городов.
+      responses:
+        '200':
+          description: Массив объектов городов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'city.resources.yml#/components/schemas/City'
+
+  /featues:
+    get:
+      tags:
+        - features
+      summary: Список удобства
+      description: Ресурс для получения списка удобств.
+      responses:
+        '200':
+          description: Массив объектов удобств.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'feature.resources.yml#/components/schemas/Feature'

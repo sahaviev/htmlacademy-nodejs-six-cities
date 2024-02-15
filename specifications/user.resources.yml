@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: user resources
+  version: '1.0'
+paths: {}
+components:
+  schemas:
+    CreateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Frank Miller
+          required: true
+        email:
+          type: string
+          example: frank.miller@example.com
+          required: true
+        avatarUrl:
+          type: string
+          example: https://example.com/avatar5.jpg
+          required: false
+        password:
+          type: string
+          example: str0ng
+          required: true
+        type:
+          enum: [pro, regular]
+          example: pro
+          required: true
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 65bff866a6e9b00b50d3116e
+        name:
+          type: string
+          example: Frank Miller
+          required: false
+        email:
+          type: string
+          example: frank.miller@example.com
+        avatarUrl:
+          type: string
+          example: https://example.com/avatar5.jpg
+        type:
+          type: string
+          example: pro
+
+
+

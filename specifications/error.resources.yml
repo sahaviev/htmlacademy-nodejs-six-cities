@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info:
+  title: error resources
+  version: '1.0'
+paths: {}
+components:
+  schemas:
+    BadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Validation failed
+    UnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User is unauthorized
+    ForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User hasn't access to requested resource
+    NotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Resource not found

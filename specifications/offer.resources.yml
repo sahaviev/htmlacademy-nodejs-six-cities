@@ -1,0 +1,192 @@
+openapi: 3.0.3
+info:
+  title: offer resources
+  version: '1.0'
+paths: {}
+components:
+  parameters:
+
+    OfferIdPath:
+      in: path
+      name: offerId
+      required: true
+      schema:
+        type: string
+        example: 65c0047ee62be3d5149d31d2
+      description: id предложения по аренде.
+
+    CityIdQuery:
+      in: query
+      name: cityId
+      required: true
+      example: 65bff866a6e9b00b50d311dd
+      allowEmptyValue: false
+
+  schemas:
+
+    SetFavoriteRequest:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+
+    CreateOfferRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Contemporary Beach House with Outdoor Lounge
+        description:
+          type: string
+          example: Relax in a contemporary beach house with an outdoor lounge, offering the perfect setting for seaside enjoyment.
+        previewImage:
+          type: string
+          example: https://picsum.photos/200/200?random=8
+        images:
+          type: string
+          example:
+            - https://picsum.photos/400/400?random=3
+            - https://picsum.photos/400/400?random=13
+            - https://picsum.photos/400/400?random=7
+        isPremium:
+          type: boolean
+          example: true
+        type:
+          type: string
+          enum: [ apartment, house, room, hotel ]
+          example: apartment
+        bedrooms:
+          type: number
+          example: 3
+        maxAdults:
+          type: number
+          example: 6
+        price:
+          type: number
+          example: 1000
+        features:
+          type: array
+          example:
+            - 65bff9b8012a887b2096462b
+            - 65bff9b8012a887b2096462e
+            - 65bff9b8012a887b20964631
+        location:
+          type: object
+          properties:
+            longitude:
+              type: number
+              example: 52.310349
+            latitude:
+              type: number
+              example: 4.904921
+        cityId:
+          type: string
+          example: 65bff866a6e9b00b50d31185
+
+    Offer:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+        title:
+          type: string
+          example: Contemporary Beach House with Outdoor Lounge
+        publishDate:
+          type: string
+          example: 2024-01-29T19:53:24.886Z
+        previewImage:
+          type: string
+          example: https://picsum.photos/200/200?random=8
+        isPremium:
+          type: boolean
+          example: true
+        isFavorite:
+          type: boolean
+          example: false
+        rating:
+          type: number
+          example: 3.9
+        type:
+          type: string
+          example: apartment
+        price:
+          type: number
+          example: 2000
+        commentsCount:
+          type: number
+          example: 13
+        city:
+          $ref: 'city.resources.yml#/components/schemas/City'
+
+    OfferDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 65c0047ee62be3d5149d31d2
+        title:
+          type: string
+          example: Contemporary Beach House with Outdoor Lounge
+        description:
+          type: string
+          example: Relax in a contemporary beach house with an outdoor lounge, offering the perfect setting for seaside enjoyment.
+        publishDate:
+          type: string
+          example: 2024-01-29T19:53:24.886Z
+        previewImage:
+          type: string
+          example: https://picsum.photos/200/200?random=8
+        images:
+          type: array
+          items:
+            type: string
+            example:
+              - https://picsum.photos/400/400?random=9
+              - https://picsum.photos/400/400?random=10
+              - https://picsum.photos/400/400?random=11
+              - https://picsum.photos/400/400?random=12
+              - https://picsum.photos/400/400?random=13
+              - https://picsum.photos/400/400?random=14
+        isPremium:
+          type: boolean
+          example: true
+        isFavorite:
+          type: boolean
+          example: false
+        rating:
+          type: number
+          example: 3.9
+        type:
+          type: string
+          example: apartment
+        bedrooms:
+          type: number
+          example: 3
+        maxAdults:
+          type: number
+          example: 6
+        price:
+          type: number
+          example: 2000
+        features:
+          type: array
+          items:
+            $ref: 'feature.resources.yml#/components/schemas/Feature'
+        location:
+          type: object
+          properties:
+            longitude:
+              type: number
+              example: 52.310349
+            latitude:
+              type: number
+              example: 4.904921
+        commentsCount:
+          type: number
+          example: 13
+        city:
+          $ref: 'city.resources.yml#/components/schemas/City'
+        user:
+          $ref: 'user.resources.yml#/components/schemas/User'

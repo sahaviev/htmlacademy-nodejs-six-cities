@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info:
+  title: city resources
+  version: '1.0'
+paths: {}
+components:
+  schemas:
+    City:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 65bff866a6e9b00b50d31185
+        name:
+          type: string
+          example: Amsterdam
+          required: true
+        location:
+          type: object
+          required: true
+          properties:
+            latitude:
+              type: string
+              example: 52.370216
+            longitude:
+              type: string
+              example: 4.895168
