@@ -5,6 +5,7 @@ import { Logger } from '../../libs/logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
+import { MAX_OFFER_COUNT } from './offer.constant.js';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
@@ -22,5 +23,35 @@ export class DefaultOfferService implements OfferService {
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel.findById(offerId).exec();
+  }
+
+
+  public async find(): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .aggregate([
+        {
+          $lookup: {
+            from: 'comments',
+            let: { offerId: '$_id' },
+            pipeline: [
+              { $match: { $expr: { $eq: ['$offerId', '$$offerId'] } } },
+              { $group: { _id: null, averageRating: { $avg: '$rating' }, commentsCount: { $sum: 1 } } },
+            ],
+            as: 'comments'
+          }
+        },
+        {
+          $addFields: {
+            commentsCount: { $arrayElemAt: ['$comments.commentsCount', 0] },
+            averageRating: { $arrayElemAt: ['$comments.averageRating', 0] }
+          }
+        },
+        {
+          $unset: 'comments'
+        },
+        {
+          $limit: MAX_OFFER_COUNT
+        },
+      ]).exec();
   }
 }

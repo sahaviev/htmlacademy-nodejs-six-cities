@@ -1,3 +1,4 @@
+
 export const Component = {
   RestApplication: Symbol.for('RestApplication'),
   Logger: Symbol.for('Logger'),
@@ -11,4 +12,6 @@ export const Component = {
   OfferModel: Symbol.for('OfferModel'),
   UserService: Symbol.for('UserService'),
   UserModel: Symbol.for('UserModel'),
+  CommentService: Symbol.for('CommentService'),
+  CommentModel: Symbol.for('CommentModel'),
 } as const;

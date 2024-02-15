@@ -2,8 +2,8 @@ import { User } from './user.type.js';
 
 export type Comment = {
   id: string;
-  comment: string;
-  date: string;
+  text: string;
+  publishDate: Date;
   rating: number;
   user: User;
 };

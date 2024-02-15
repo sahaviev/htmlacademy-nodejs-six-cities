@@ -18,10 +18,6 @@ export class DefaultFeatureService implements FeatureService {
     return result;
   }
 
-  public async findByFeatureId(featureId: string): Promise<DocumentType<FeatureEntity> | null> {
-    return this.featureModel.findById(featureId).exec();
-  }
-
   public async findByFeatureName(name: string): Promise<DocumentType<FeatureEntity> | null> {
     return this.featureModel.findOne({name}).exec();
   }
