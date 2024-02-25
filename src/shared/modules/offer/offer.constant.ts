@@ -1,1 +1,2 @@
-export const MAX_OFFER_COUNT = 60;
+export const OFFERS_LIMIT = 50;
+export const PREMIUM_OFFERS_LIMIT = 3;

@@ -44,7 +44,7 @@ export class ImportCommand implements Command {
   }
 
   private onCompleteImport(count: number) {
-    console.info(`${chalk.blue(count)} rows imported.`);
+    this.logger.info(`${chalk.blue(count)} rows imported.`);
     this.databaseClient.disconnect();
   }
 
@@ -53,6 +53,7 @@ export class ImportCommand implements Command {
       ...offer.user,
       password: DEFAULT_USER_PASSWORD
     }, this.salt);
+    this.logger.info(user.name);
 
     const city = await this.cityService.findByNameOrCreate(offer.city.name, offer.city);
 
@@ -67,19 +68,15 @@ export class ImportCommand implements Command {
     await this.offerService.create({
       title: offer.title,
       description: offer.description,
-      publishDate: offer.publishDate,
       previewImage: offer.previewImage,
       images: offer.images,
       isPremium: offer.isPremium,
-      isFavorite: offer.isFavorite,
-      rating: offer.rating,
       type: offer.type as OfferType,
       bedrooms: offer.bedrooms,
       maxAdults: offer.maxAdults,
       price: offer.price,
       location: offer.location,
       features,
-      userId: user.id,
       cityId: city.id,
     });
   }

@@ -1,4 +1,5 @@
 import { CommentService } from './comment-service.interface.js';
+import * as mongoose from "mongoose";
 import { inject, injectable } from 'inversify';
 import { Component } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
@@ -21,5 +22,25 @@ export class DefaultCommentService implements CommentService {
 
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[] | null> {
     return this.commentModel.find({ offerId }).exec();
+  }
+
+  public async getOfferStatistics(offerId: string): Promise<number> {
+    const [{ rating }] = await this.commentModel.aggregate([
+      { $match: { offerId: new mongoose.Types.ObjectId(offerId) } },
+      {
+        $group: {
+          _id: null,
+          totalRating: { $sum: "$rating" },
+          totalComments: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          rating: { $divide: ["$totalRating", "$totalComments"] },
+        },
+      },
+    ]);
+
+    return Number(rating.toFixed(1));
   }
 }

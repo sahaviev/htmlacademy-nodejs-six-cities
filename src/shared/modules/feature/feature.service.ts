@@ -1,11 +1,12 @@
 import { FeatureService } from './feature-service.interface.js';
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { Component } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { FeatureEntity } from './feature.entity.js';
 import { CreateFeatureDto } from './dto/create-feature.dto.js';
 
+@injectable()
 export class DefaultFeatureService implements FeatureService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
@@ -16,6 +17,12 @@ export class DefaultFeatureService implements FeatureService {
     const result = await this.featureModel.create(dto);
     this.logger.info(`New feature created: ${dto.name}`);
     return result;
+  }
+
+  public async find(): Promise<DocumentType<FeatureEntity>[]> {
+    return this.featureModel
+      .find()
+      .exec();
   }
 
   public async findByFeatureName(name: string): Promise<DocumentType<FeatureEntity> | null> {

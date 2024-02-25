@@ -22,8 +22,6 @@ tags:
     description: Действия с пользователями.
   - name: auth
     description: Действия с сессией.
-  - name: cities
-    description: Действия с городами.
   - name: features
     description: Действия с удобствами.
 
@@ -205,7 +203,7 @@ paths:
                 schema:
                   $ref: 'error.resources.yml#/components/schemas/NotFoundError'
 
-  /offers/premium-offers:
+  /offers/premium:
     get:
       tags:
         - offers
@@ -223,7 +221,7 @@ paths:
                 items:
                   $ref: 'offer.resources.yml#/components/schemas/Offer'
 
-  /offers/favorite-offers:
+  /offers/favorite:
     get:
       tags:
         - offers
@@ -397,23 +395,7 @@ paths:
               schema:
                 $ref: 'error.resources.yml#/components/schemas/UnauthorizedError'
 
-  /cities:
-    get:
-      tags:
-        - cities
-      summary: Список городов
-      description: Ресурс для получения списка городов.
-      responses:
-        '200':
-          description: Массив объектов городов.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: 'city.resources.yml#/components/schemas/City'
-
-  /featues:
+  /features:
     get:
       tags:
         - features
