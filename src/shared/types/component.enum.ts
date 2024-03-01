@@ -15,6 +15,7 @@ export const Component = {
   UserController: Symbol.for('UserController'),
   UserService: Symbol.for('UserService'),
   UserModel: Symbol.for('UserModel'),
+  CommentController: Symbol.for('CommentController'),
   CommentService: Symbol.for('CommentService'),
   CommentModel: Symbol.for('CommentModel'),
   ExceptionFilter: Symbol.for('ExceptionFilter'),

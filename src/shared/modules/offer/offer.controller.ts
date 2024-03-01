@@ -1,6 +1,13 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
-import { BaseController, HttpError, HttpMethod, RequestBody, RequestParams } from '../../libs/rest/index.js';
+import {
+  BaseController, DocumentExistsMiddleware,
+  HttpError,
+  HttpMethod,
+  RequestBody,
+  RequestParams,
+  ValidateDtoMiddleware, ValidateObjectIdMiddleware,
+} from '../../libs/rest/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { Component } from '../../types/index.js';
 import { fillDTO } from '../../helpers/index.js';
@@ -22,11 +29,41 @@ export class OfferController extends BaseController {
     this.logger.info('Register routes for OfferController...');
 
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
-    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)]
+    });
     this.addRoute({ path: '/premium', method: HttpMethod.Get, handler: this.getPremiumOffers });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.get });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Get,
+      handler: this.show,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Patch,
+      handler: this.update,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new ValidateDtoMiddleware(UpdateOfferDto),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.delete,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ]
+    });
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
@@ -35,7 +72,7 @@ export class OfferController extends BaseController {
     this.ok(res, response);
   }
 
-  public async get(req: Request, res: Response): Promise<void> {
+  public async show(req: Request, res: Response): Promise<void> {
     const offerId = req.params.offerId;
     const offer = await this.offerService.findById(offerId);
     const response = fillDTO(OfferDetailsRdo, offer);
@@ -46,8 +83,9 @@ export class OfferController extends BaseController {
     { body }: Request<RequestParams, RequestBody, CreateOfferDto>,
     res: Response
   ): Promise<void> {
-    const response = await this.offerService.create(body);
-    this.created(res, fillDTO(OfferDetailsRdo, response));
+    const result = await this.offerService.create(body);
+    const offer = await this.offerService.findById(result.id);
+    this.created(res, fillDTO(OfferDetailsRdo, offer));
   }
 
 
@@ -57,23 +95,20 @@ export class OfferController extends BaseController {
   ): Promise<void> {
     const offerId = req.params.offerId as string;
     const body = req.body;
-    const response = await this.offerService.update(offerId, body);
-    this.ok(res, fillDTO(OfferDetailsRdo, response));
-  }
-
-  public async delete(req: Request, res: Response): Promise<void> {
-    const offerId = req.params.offerId;
-
-    const existsOffer = await this.offerService.findById(offerId);
-
-    if (!existsOffer) {
+    const result = await this.offerService.update(offerId, body);
+    if (!result) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `Offer with id «${offerId}» not found.`,
         'OfferController'
       );
     }
+    const offer = await this.offerService.findById(result.id);
+    this.ok(res, fillDTO(OfferDetailsRdo, offer));
+  }
 
+  public async delete(req: Request, res: Response): Promise<void> {
+    const offerId = req.params.offerId;
     await this.offerService.deleteById(offerId);
     this.noContent(res, undefined);
   }

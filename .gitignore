@@ -5,3 +5,5 @@ dist
 src/mocks/*.tsv
 .env
 logs/*.log
+
+public

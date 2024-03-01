@@ -2,7 +2,7 @@ import { Expose } from 'class-transformer';
 
 export class CityRdo {
   @Expose()
-  public _id: string;
+  public id: string;
 
   @Expose()
   public name: string;

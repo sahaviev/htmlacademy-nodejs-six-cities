@@ -6,6 +6,7 @@ import { Logger } from '../../libs/logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { CommentEntity } from './comment.entity.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
+import { CommentStatistics } from './types/comment-statistics.type.js';
 
 @injectable()
 export class DefaultCommentService implements CommentService {
@@ -20,27 +21,29 @@ export class DefaultCommentService implements CommentService {
     return result;
   }
 
+  public async findById(commentId: string): Promise<DocumentType<CommentEntity> | null> {
+    return this.commentModel
+      .findById(commentId)
+      .populate(['userId'])
+      .exec();
+  }
+
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[] | null> {
     return this.commentModel.find({ offerId }).exec();
   }
 
-  public async getOfferStatistics(offerId: string): Promise<number> {
-    const [{ rating }] = await this.commentModel.aggregate([
+  public async getOfferStatistics(offerId: string): Promise<CommentStatistics> {
+    const [{ rating, commentsCount }] = await this.commentModel.aggregate([
       { $match: { offerId: new mongoose.Types.ObjectId(offerId) } },
       {
         $group: {
           _id: null,
-          totalRating: { $sum: "$rating" },
-          totalComments: { $sum: 1 },
-        },
-      },
-      {
-        $project: {
-          rating: { $divide: ["$totalRating", "$totalComments"] },
+          rating: { $avg: "$rating" },
+          commentsCount: { $sum: 1 },
         },
       },
     ]);
 
-    return Number(rating.toFixed(1));
+    return { rating: Number(rating.toFixed(2)), commentsCount };
   }
 }

@@ -31,16 +31,16 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public images!: string[];
 
   @prop()
-  public publishDate!: Date;
-
-  @prop()
   public isPremium!: boolean;
 
   @prop()
   public isFavorite!: boolean;
 
-  @prop({ min: 1, max: 5 })
+  @prop({ min: 1, max: 5, default: null })
   public rating!: number;
+
+  @prop({ default: 0 })
+  public commentsCount!: number;
 
   @prop({
     type: () => String,

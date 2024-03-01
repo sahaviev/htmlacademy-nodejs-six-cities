@@ -8,8 +8,8 @@ export class OfferRdo {
   @Expose()
   public title: string;
 
-  @Expose()
-  public createdAt: string;
+  @Expose({ name: 'createdAt'})
+  public publishDate: string;
 
   @Expose()
   public previewImage: string;
@@ -30,9 +30,9 @@ export class OfferRdo {
   public commentsCount: number;
 
   @Expose()
-  public averageRating: number;
+  public rating: number;
 
-  @Expose()
+  @Expose({ name: 'cityId'})
   @Type(() => CityRdo)
   public city: CityRdo;
 }

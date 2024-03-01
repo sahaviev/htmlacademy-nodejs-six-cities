@@ -1,13 +1,21 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
-import { BaseController, HttpError, HttpMethod, RequestBody, RequestParams } from '../../libs/rest/index.js';
-import { Logger } from '../../libs/logger/index.js';
+import {
+  BaseController,
+  HttpError,
+  HttpMethod,
+  RequestBody,
+  RequestParams,
+  ValidateDtoMiddleware, ValidateObjectIdMiddleware,
+} from '../../libs/rest/index.js';
 import { Component } from '../../types/index.js';
 import { fillDTO } from '../../helpers/index.js';
 import { UserService } from './user-service.interface.js';
 import { UserRdo } from './rdo/user.rdo.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
+import { Logger } from '../../libs/logger/index.js';
 import { Config, RestSchema } from '../../libs/config/index.js';
+import { UploadFileMiddleware } from '../../libs/rest/middleware/upload-file.middleware.js';
 import { StatusCodes } from 'http-status-codes';
 
 @injectable()
@@ -21,7 +29,23 @@ export class UserController extends BaseController {
 
     this.logger.info('Register routes for UserController...');
 
-    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [
+        new ValidateDtoMiddleware(CreateUserDto)
+      ]
+    });
+    this.addRoute({
+      path: '/:userId/avatar',
+      method: HttpMethod.Post,
+      handler: this.uploadAvatar,
+      middlewares: [
+        new ValidateObjectIdMiddleware('userId'),
+        new UploadFileMiddleware(this.config.get('UPLOAD_DIRECTORY'), 'avatar'),
+      ]
+    });
   }
 
   public async create(
@@ -40,5 +64,11 @@ export class UserController extends BaseController {
 
     const response = await this.userService.create(body, this.config.get('SALT'));
     this.created(res, fillDTO(UserRdo, response));
+  }
+
+  public async uploadAvatar(req: Request, res: Response) {
+    this.created(res, {
+      filepath: req.file?.path
+    });
   }
 }

@@ -52,13 +52,13 @@ export class OfferDetailsRdo {
   public commentsCount: number;
 
   @Expose()
-  public averageRating: number;
+  public rating: number;
 
-  @Expose()
+  @Expose({ name: 'cityId'})
   @Type(() => CityRdo)
   public city: CityRdo;
 
-  @Expose()
+  @Expose({ name: 'userId'})
   @Type(() => UserRdo)
   public user: UserRdo;
 }
