@@ -4,6 +4,10 @@ export const Component = {
   Logger: Symbol.for('Logger'),
   Config: Symbol.for('Config'),
   DatabaseClient: Symbol.for('DatabaseClient'),
+  ExceptionFilter: Symbol.for('ExceptionFilter'),
+  AuthController: Symbol.for('AuthController'),
+  AuthService: Symbol.for('AuthService'),
+  AuthExceptionFilter: Symbol.for('AuthExceptionFilter'),
   CityService: Symbol.for('CityService'),
   CityModel: Symbol.for('CityModel'),
   FeatureController: Symbol.for('FeatureController'),
@@ -18,5 +22,4 @@ export const Component = {
   CommentController: Symbol.for('CommentController'),
   CommentService: Symbol.for('CommentService'),
   CommentModel: Symbol.for('CommentModel'),
-  ExceptionFilter: Symbol.for('ExceptionFilter'),
 } as const;

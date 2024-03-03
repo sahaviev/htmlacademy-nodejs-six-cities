@@ -14,15 +14,16 @@ export class FeatureController extends BaseController {
     @inject(Component.FeatureService) private readonly featureService: FeatureService,
   ) {
     super(logger);
-
     this.logger.info('Register routes for FeatureController...');
-
-    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Get,
+      handler: this.index
+    });
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
     const features = await this.featureService.find();
-    const response = fillDTO(FeatureRdo, features);
-    this.ok(res, response);
+    this.ok(res, fillDTO(FeatureRdo, features));
   }
 }

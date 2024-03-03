@@ -1,12 +1,13 @@
 import { CommentService } from './comment-service.interface.js';
-import * as mongoose from "mongoose";
+import { ObjectId } from 'mongodb';
 import { inject, injectable } from 'inversify';
-import { Component } from '../../types/index.js';
+import { Component, SortType } from '../../types/index.js';
 import { Logger } from '../../libs/logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { CommentEntity } from './comment.entity.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { CommentStatistics } from './types/comment-statistics.type.js';
+import { COMMENTS_LIMIT } from './comment.constant.js';
 
 @injectable()
 export class DefaultCommentService implements CommentService {
@@ -29,12 +30,17 @@ export class DefaultCommentService implements CommentService {
   }
 
   public async findByOfferId(offerId: string): Promise<DocumentType<CommentEntity>[] | null> {
-    return this.commentModel.find({ offerId }).exec();
+    return this.commentModel
+      .find({ offerId })
+      .populate(['userId'])
+      .limit(COMMENTS_LIMIT)
+      .sort({ createdAt: SortType.Descending })
+      .exec();
   }
 
   public async getOfferStatistics(offerId: string): Promise<CommentStatistics> {
     const [{ rating, commentsCount }] = await this.commentModel.aggregate([
-      { $match: { offerId: new mongoose.Types.ObjectId(offerId) } },
+      { $match: { offerId: new ObjectId(offerId) } },
       {
         $group: {
           _id: null,

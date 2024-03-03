@@ -24,13 +24,6 @@ components:
 
   schemas:
 
-    SetFavoriteRequest:
-      type: object
-      properties:
-        status:
-          type: boolean
-          example: true
-
     CreateOfferRequest:
       type: object
       properties:

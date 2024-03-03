@@ -16,11 +16,15 @@ export class DefaultUserService implements UserService {
   public async create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
     const user = new UserEntity(dto);
     user.setPassword(dto.password, salt);
-
     const result = await this.userModel.create(user);
     this.logger.info(`New user created: ${user.email}`);
-
     return result;
+  }
+
+  public async findById(userId: string): Promise<DocumentType<UserEntity> | null> {
+    return this.userModel
+      .findById(userId)
+      .exec();
   }
 
   public async findByEmail(email: string): Promise<DocumentType<UserEntity> | null> {
@@ -29,11 +33,21 @@ export class DefaultUserService implements UserService {
 
   public async findOrCreate(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
     const existedUser = await this.findByEmail(dto.email);
-
     if (existedUser) {
       return existedUser;
     }
-
     return this.create(dto, salt);
+  }
+
+  public async addOfferToFavorites(userId: string, offerId: string): Promise<unknown> {
+    return this.userModel
+      .findByIdAndUpdate(userId, { $push: { favorites: offerId } })
+      .exec();
+  }
+
+  public async deleteOfferFromFavorites(userId: string, offerId: string): Promise<unknown> {
+    return this.userModel
+      .findByIdAndUpdate(userId, { $pull: { favorites: offerId } })
+      .exec();
   }
 }

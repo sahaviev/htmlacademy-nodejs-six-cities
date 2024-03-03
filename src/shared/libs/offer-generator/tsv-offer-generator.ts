@@ -3,9 +3,6 @@ import { OfferGenerator } from './offer-generator.interface.js';
 import { MockServerData } from '../../types/index.js';
 import { generateRandomValue, getRandomItem, getRandomItems } from '../../helpers/index.js';
 
-const MIN_RATING = 1;
-const MAX_RATING = 5;
-
 const MIN_BEDROOMS = 1;
 const MAX_BEDROOMS = 8;
 
@@ -28,8 +25,6 @@ export class TSVOfferGenerator implements OfferGenerator {
     const previewImage = getRandomItem(this.mockData.previewImages);
     const images = getRandomItems(this.mockData.images).slice(0, 6).join(';');
     const isPremium = Boolean(generateRandomValue(0, 1));
-    const isFavorite = Boolean(generateRandomValue(0, 1));
-    const rating = generateRandomValue(MIN_RATING, MAX_RATING, 1);
     const type = getRandomItem(this.mockData.types);
     const maxAdults = generateRandomValue(MIN_ADULTS, MAX_ADULTS);
     const bedrooms = generateRandomValue(MIN_BEDROOMS, MAX_BEDROOMS);
@@ -51,8 +46,6 @@ export class TSVOfferGenerator implements OfferGenerator {
       previewImage,
       images,
       isPremium,
-      isFavorite,
-      rating,
       type,
       bedrooms,
       maxAdults,

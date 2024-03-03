@@ -1,6 +1,6 @@
-import { Offer, OfferType, UserType } from '../types/index.js';
+import { OfferType, PartialOffer, UserType } from '../types/index.js';
 
-export function createOffer(offerData: string): Offer {
+export function createOffer(offerData: string): PartialOffer{
   const [
     title,
     description,
@@ -11,8 +11,6 @@ export function createOffer(offerData: string): Offer {
     previewImage,
     images,
     isPremium,
-    isFavorite,
-    rating,
     type,
     bedrooms,
     maxAdults,
@@ -40,8 +38,6 @@ export function createOffer(offerData: string): Offer {
     previewImage,
     images: images.split(';'),
     isPremium: isPremium === "true",
-    isFavorite: isFavorite === "true",
-    rating: Number.parseFloat(rating),
     type: type as OfferType,
     bedrooms: Number(bedrooms),
     maxAdults: Number(maxAdults),

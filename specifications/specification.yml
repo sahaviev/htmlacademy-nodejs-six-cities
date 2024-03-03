@@ -155,6 +155,12 @@ paths:
       responses:
         '204':
           description: Предложение по аренде успешно удалено.
+        '403':
+          description: Доступ запрещён.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/ForbiddenError'
         '404':
           description: Ошибка объект предложения по аренде не найден.
           content:
@@ -166,30 +172,17 @@ paths:
       patch:
         tags:
           - offers
-        summary: Добавление и удаление предложения по аренде в избранное
-        description: Ресурс для добавления и удаления предложения по аренде в избранное.
+        summary: Добавление предложения по аренде в избранное
+        description: Ресурс для добавления предложения по аренде в избранное.
         parameters:
           - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
-        requestBody:
-          description: Информация для добавления предложения об аренде в избранное.
-          content:
-            application/json:
-              schema:
-                $ref: 'offer.resources.yml#/components/schemas/SetFavoriteRequest'
-          required: true
         responses:
           '200':
-            description: Предложение по аренде обновлено. Объект предложения по аренде.
+            description: Предложение по аренде добавление в избранное пользователя. Объект предложения по аренде.
             content:
               application/json:
                 schema:
                   $ref: 'offer.resources.yml#/components/schemas/OfferDetails'
-          '400':
-            description: Ошибка валидации данных.
-            content:
-              application/json:
-                schema:
-                  $ref: 'error.resources.yml#/components/schemas/BadRequestError'
           '401':
             description: Пользователь не авторизован.
             content:
@@ -202,6 +195,53 @@ paths:
               application/json:
                 schema:
                   $ref: 'error.resources.yml#/components/schemas/NotFoundError'
+      delete:
+        tags:
+          - offers
+        summary: Удаление предложения по аренде из избранного
+        description: Ресурс для удаления предложения по аренде из избранного.
+        parameters:
+          - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
+        responses:
+          '204':
+            description: Предложение по аренде удалено из избранного пользователя. Объект предложения по аренде.
+          '401':
+            description: Пользователь не авторизован.
+            content:
+              application/json:
+                schema:
+                  $ref: 'error.resources.yml#/components/schemas/UnauthorizedError'
+          '404':
+            description: Ошибка объект предложения по аренде не найден.
+            content:
+              application/json:
+                schema:
+                  $ref: 'error.resources.yml#/components/schemas/NotFoundError'
+
+
+  /offers/${offerId}/comments:
+    get:
+      tags:
+        - offers
+      summary: Список комментариев для предложения по аренде
+      description: Ресурс для получения списка комментариев для предложения по аренде.
+      parameters:
+        - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
+      responses:
+        '200':
+          description: Массив объектов комментария.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'comment.resources.yml#/components/schemas/Comment'
+        '404':
+          description: Ошибка объект предложения по аренде не найден.
+          content:
+            application/json:
+              schema:
+                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
 
   /offers/premium:
     get:
@@ -237,36 +277,12 @@ paths:
                 items:
                   $ref: 'offer.resources.yml#/components/schemas/Offer'
 
-  /offers/${offerId}/comments:
-    get:
-      tags:
-        - comments
-      summary: Список комментариев для предложения по аренде
-      description: Ресурс для получения списка комментариев для предложения по аренде.
-      parameters:
-        - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
-      responses:
-        '200':
-          description: Массив объектов комментария.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: 'comment.resources.yml#/components/schemas/Comment'
-        '404':
-          description: Ошибка объект предложения по аренде не найден.
-          content:
-            application/json:
-              schema:
-                $ref: 'error.resources.yml#/components/schemas/BadRequestError'
+  /comments:
     post:
       tags:
         - comments
       summary: Добавление комментария к определённому предложению по аренде
       description: Ресурс для добавления комментариев к определённому предложению по аренде.
-      parameters:
-        - $ref: 'offer.resources.yml#/components/parameters/OfferIdPath'
       requestBody:
         description: Информация для создание нового комментария.
         content:

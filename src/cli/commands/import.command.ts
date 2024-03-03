@@ -10,7 +10,7 @@ import { DefaultCityService, CityModel, CityService } from '../../shared/modules
 import { DefaultUserService, UserModel, UserService } from '../../shared/modules/user/index.js';
 import { DefaultFeatureService, FeatureModel, FeatureService } from '../../shared/modules/feature/index.js';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
-import { Offer, OfferType } from '../../shared/types/index.js';
+import { OfferType, PartialOffer } from '../../shared/types/index.js';
 
 export class ImportCommand implements Command {
   private featureService: FeatureService;
@@ -18,8 +18,8 @@ export class ImportCommand implements Command {
   private cityService: CityService;
   private offerService: OfferService;
   private databaseClient: DatabaseClient;
-  private logger: Logger;
   private salt: string;
+  private readonly logger: Logger;
 
   constructor() {
     this.onImportedLine = this.onImportedLine.bind(this);
@@ -48,7 +48,7 @@ export class ImportCommand implements Command {
     this.databaseClient.disconnect();
   }
 
-  private async saveOffer(offer: Offer) {
+  private async saveOffer(offer: PartialOffer) {
     const user = await this.userService.findOrCreate({
       ...offer.user,
       password: DEFAULT_USER_PASSWORD
@@ -78,6 +78,7 @@ export class ImportCommand implements Command {
       location: offer.location,
       features,
       cityId: city.id,
+      userId: user.id,
     });
   }
 

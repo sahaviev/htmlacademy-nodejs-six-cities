@@ -3,19 +3,21 @@
 ## Список предложенией по аренде
 GET http://localhost:4000/offers HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtaWx5LmJyb3duMUBleGFtcGxlLmNvbSIsIm5hbWUiOiJFbWlseSBCcm93biIsImlkIjoiNjVlMjJiMjExZWM4ZmM4NjBkMDFjNTg1IiwiaWF0IjoxNzA5MzI3MTk5LCJleHAiOjE3MDk0OTk5OTl9.b569BCI2dh0J9RndG1v52NsUVOpdn28VAQA7sjYlg6w
 
 ###
 
 ## Создание предложения по аренде
 POST http://localhost:4000/offers HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtaWx5LmJyb3duMUBleGFtcGxlLmNvbSIsIm5hbWUiOiJFbWlseSBCcm93biIsImlkIjoiNjVlMjJiMjExZWM4ZmM4NjBkMDFjNTg1IiwiaWF0IjoxNzA5MzI3MTk5LCJleHAiOjE3MDk0OTk5OTl9.b569BCI2dh0J9RndG1v52NsUVOpdn28VAQA7sjYlg6w
 
 {
   "title": "Cozy Apartment in the Heart of the City",
   "description": "Experience the charm of city living in this cozy apartment located in the heart of downtown. Close to shops, restaurants, and cultural attractions.",
   "previewImage": "https://picsum.photos/200/200?random=1",
   "images": [
-    1,
+    "https://picsum.photos/400/400?random=1",
     "https://picsum.photos/400/400?random=2",
     "https://picsum.photos/400/400?random=3"
   ],
@@ -29,8 +31,7 @@ Content-Type: application/json
     "latitude": 53.550341,
     "longitude": 10.000654
   },
-  "cityId": "65cab182e3aeca1ef1f1ff85",
-  "userId": "65cab182e3aeca1ef1f1ff79"
+  "cityId": "65cab182e3aeca1ef1f1ff85"
 }
 
 ###
@@ -44,6 +45,7 @@ Content-Type: application/json
 ## Редактирование предложения по аренде
 PATCH http://localhost:4000/offers/65dcb1997bed083a402085ef HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtaWx5LmJyb3duMUBleGFtcGxlLmNvbSIsIm5hbWUiOiJFbWlseSBCcm93biIsImlkIjoiNjVlMjJiMjExZWM4ZmM4NjBkMDFjNTg1IiwiaWF0IjoxNzA5MzI3MTk5LCJleHAiOjE3MDk0OTk5OTl9.b569BCI2dh0J9RndG1v52NsUVOpdn28VAQA7sjYlg6w
 
 {
   "title": "Cozy Apartment in the Heart of the City 222",
@@ -71,11 +73,39 @@ Content-Type: application/json
 ###
 
 ## Удаление предложения по аренде
-DELETE http://localhost:4000/offers/65ce3dbc6c51f51be0453eec HTTP/1.1
+DELETE http://localhost:4000/offers/65e25b04d4006f45f24e94c4 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtaWx5LmJyb3duMUBleGFtcGxlLmNvbSIsIm5hbWUiOiJFbWlseSBCcm93biIsImlkIjoiNjVlMjJiMjExZWM4ZmM4NjBkMDFjNTg1IiwiaWF0IjoxNzA5MzI3MTk5LCJleHAiOjE3MDk0OTk5OTl9.b569BCI2dh0J9RndG1v52NsUVOpdn28VAQA7sjYlg6w
 
 ###
 
 ## Список премиальных предложенией по аренде для города
 GET http://localhost:4000/offers/premium?cityId=65cab182e3aeca1ef1f2004d HTTP/1.1
 Content-Type: application/json
+
+###
+
+## Список комментариев для предложения по аренде
+GET http://localhost:4000/offers/65dcb1997bed083a402085ef/comments HTTP/1.1
+Content-Type: application/json
+
+###
+
+## Список избранных предложений по аренде
+GET http://localhost:4000/offers/favorite HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtaWx5LmJyb3duMUBleGFtcGxlLmNvbSIsIm5hbWUiOiJFbWlseSBCcm93biIsImlkIjoiNjVlMjJiMjExZWM4ZmM4NjBkMDFjNTg1IiwiaWF0IjoxNzA5MzI3MTk5LCJleHAiOjE3MDk0OTk5OTl9.b569BCI2dh0J9RndG1v52NsUVOpdn28VAQA7sjYlg6w
+
+###
+
+## Добавление предложения по аренде в избранное
+PATCH http://localhost:4000/offers/65e3abf679a5a0b30b440588/favorite HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtaWx5LmJyb3duMUBleGFtcGxlLmNvbSIsIm5hbWUiOiJFbWlseSBCcm93biIsImlkIjoiNjVlMjJiMjExZWM4ZmM4NjBkMDFjNTg1IiwiaWF0IjoxNzA5MzI3MTk5LCJleHAiOjE3MDk0OTk5OTl9.b569BCI2dh0J9RndG1v52NsUVOpdn28VAQA7sjYlg6w
+
+###
+
+## Удаление предложения по аренде из избранного
+DELETE http://localhost:4000/offers/65ce3dbc6c51f51be0453ef2/favorite HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtaWx5LmJyb3duMUBleGFtcGxlLmNvbSIsIm5hbWUiOiJFbWlseSBCcm93biIsImlkIjoiNjVlMjJiMjExZWM4ZmM4NjBkMDFjNTg1IiwiaWF0IjoxNzA5MzI3MTk5LCJleHAiOjE3MDk0OTk5OTl9.b569BCI2dh0J9RndG1v52NsUVOpdn28VAQA7sjYlg6w

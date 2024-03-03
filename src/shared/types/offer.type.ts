@@ -21,3 +21,5 @@ export type Offer = {
   user: User;
   location: Location;
 };
+
+export type PartialOffer = Omit<Offer, 'isFavorite' | 'rating'> ;

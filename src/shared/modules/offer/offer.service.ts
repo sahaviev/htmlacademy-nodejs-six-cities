@@ -14,7 +14,7 @@ import { CommentStatistics } from '../comment/types/comment-statistics.type.js';
 export class DefaultOfferService implements OfferService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
-    @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>
+    @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
   ) {}
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
@@ -56,6 +56,15 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
+  public async findOffersByIds(offersIds: string[]): Promise<DocumentType<OfferEntity>[]> {
+    return this.offerModel
+      .find({'_id':{$in: offersIds}})
+      .populate(['userId', 'cityId'])
+      .limit(OFFERS_LIMIT)
+      .sort({ createdAt: SortType.Descending })
+      .exec();
+  }
+
   public async updateOfferStatistics(offerId: string, statistics: CommentStatistics): Promise<DocumentType<OfferEntity> | null> {
     return await this.offerModel
       .findByIdAndUpdate(offerId, statistics)
@@ -68,7 +77,9 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async exists(documentId: string): Promise<boolean> {
-    return (await this.offerModel
-      .exists({_id: documentId})) !== null;
+    return (
+      await this.offerModel
+        .exists({_id: documentId})
+    ) !== null;
   }
 }

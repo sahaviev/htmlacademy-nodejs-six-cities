@@ -16,13 +16,13 @@ components:
       properties:
         message:
           type: string
-          example: User is unauthorized
+          example: Unauthorized
     ForbiddenError:
       type: object
       properties:
         message:
           type: string
-          example: User hasn't access to requested resource
+          example: Access Denied
     NotFoundError:
       type: object
       properties:

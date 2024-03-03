@@ -72,5 +72,7 @@ export class CreateOfferDto {
 
   @IsMongoId({ message: CreateOfferValidationMessage.cityId.invalidId })
   public cityId: string;
+
+  public userId: string;
 }
 

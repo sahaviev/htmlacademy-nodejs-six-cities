@@ -16,6 +16,10 @@ components:
           type: number
           example: 5
           required: true
+        offerId:
+          type: string
+          example: 5
+          required: true
     Comment:
       type: object
       properties:

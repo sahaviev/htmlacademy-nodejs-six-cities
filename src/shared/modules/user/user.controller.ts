@@ -49,11 +49,18 @@ export class UserController extends BaseController {
   }
 
   public async create(
-    { body }: Request<RequestParams, RequestBody, CreateUserDto>,
+    { tokenPayload, body }: Request<RequestParams, RequestBody, CreateUserDto>,
     res: Response
   ): Promise<void> {
-    const existsUser = await this.userService.findByEmail(body.email);
+    if (tokenPayload?.id) {
+      throw new HttpError(
+        StatusCodes.FORBIDDEN,
+        `Access Denied`,
+        'User Controller'
+      );
+    }
 
+    const existsUser = await this.userService.findByEmail(body.email);
     if (existsUser) {
       throw new HttpError(
         StatusCodes.CONFLICT,
@@ -61,7 +68,6 @@ export class UserController extends BaseController {
         'UserController'
       );
     }
-
     const response = await this.userService.create(body, this.config.get('SALT'));
     this.created(res, fillDTO(UserRdo, response));
   }
