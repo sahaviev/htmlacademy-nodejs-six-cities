@@ -147,7 +147,7 @@ export class OfferController extends BaseController {
   ): Promise<void> {
     const { offerId } = params;
     const offer = await this.offerService.findById(offerId);
-    if (offer?.userId.id !== tokenPayload.id) {
+    if (offer?.userId?.id !== tokenPayload.id) {
       throw new HttpError(
         StatusCodes.FORBIDDEN,
         `Access Denied`,
@@ -173,7 +173,7 @@ export class OfferController extends BaseController {
   ): Promise<void> {
     const { offerId } = params;
     const offer = await this.offerService.findById(offerId);
-    if (offer?.userId.id !== tokenPayload.id) {
+    if (offer?.userId?.id !== tokenPayload.id) {
       throw new HttpError(
         StatusCodes.FORBIDDEN,
         `Access Denied`,
@@ -213,7 +213,7 @@ export class OfferController extends BaseController {
     const { offerId } = params;
     const user = await this.userService.findById(tokenPayload.id);
     if (!user?.favorites.includes(offerId)) {
-      await this.userService.addOfferToFavorites(tokenPayload.id, offerId);
+     await this.userService.addOfferToFavorites(user?.id, offerId);
     }
     const offer = await this.offerService.findById(offerId);
     this.ok(res, fillDTO(OfferDetailsRdo, offer));
@@ -222,9 +222,7 @@ export class OfferController extends BaseController {
   public async deleteOfferFromFavorite({ tokenPayload, params }: Request<ParamOfferId>, res: Response) {
     const { offerId } = params;
     const user = await this.userService.findById(tokenPayload.id);
-    if (user?.favorites.includes(offerId)) {
-      await this.userService.deleteOfferFromFavorites(tokenPayload.id, offerId);
-    }
+    await this.userService.deleteOfferFromFavorites(user?.id, offerId);
     this.noContent(res, null);
   }
 }

@@ -31,7 +31,7 @@ export function fillFavorites(offers: OfferEntity[] | null, user: UserEntity | n
   return offers.map(offer => {
     offer.isFavorite = user.favorites.includes(offer.id);
     return offer;
-  })
+  });
 }
 
 export function createErrorObject(message: string) {
