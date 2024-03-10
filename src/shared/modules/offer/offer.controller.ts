@@ -21,6 +21,7 @@ import { StatusCodes } from 'http-status-codes';
 import { CommentService, CommentRdo } from '../comment/index.js';
 import { UserService } from '../user/index.js';
 import { ParamOfferId } from './types/param-offerid.type.js';
+import { OFFERS_LIMIT } from './offer.constant.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -120,8 +121,9 @@ export class OfferController extends BaseController {
     });
   }
 
-  public async index({ tokenPayload }: Request, res: Response): Promise<void> {
-    const offers = await this.offerService.find();
+  public async index({ tokenPayload, query }: Request, res: Response): Promise<void> {
+    const limit = query.limit ? Number(query.limit) : OFFERS_LIMIT;
+    const offers = await this.offerService.find(limit);
     const user = tokenPayload ? await this.userService.findById(tokenPayload.id) : null;
     this.ok(res, fillDTO(OfferRdo, fillFavorites(offers, user)));
   }

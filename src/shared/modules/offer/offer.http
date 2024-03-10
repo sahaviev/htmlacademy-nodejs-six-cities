@@ -1,7 +1,7 @@
 # Offers
 
 ## Список предложенией по аренде
-GET http://localhost:4000/offers HTTP/1.1
+GET http://localhost:4000/offers?limit=5 HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImVtaWx5LmJyb3duMUBleGFtcGxlLmNvbSIsIm5hbWUiOiJFbWlseSBCcm93biIsImlkIjoiNjVlMjJiMjExZWM4ZmM4NjBkMDFjNTg1IiwiaWF0IjoxNzA5MzI3MTk5LCJleHAiOjE3MDk0OTk5OTl9.b569BCI2dh0J9RndG1v52NsUVOpdn28VAQA7sjYlg6w
 
